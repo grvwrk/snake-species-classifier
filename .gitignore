@@ -4,6 +4,7 @@ __pycache__/
 .venv/
 venv/
 env/
+.streamlit/
 
 # Secrets
 .env
@@ -20,3 +21,6 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# PyTorch model checkpoints
+*.pth
