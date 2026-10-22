@@ -22,7 +22,7 @@ TOP_K_DEFAULT = 5
 st.set_page_config(
     page_title="Snake Species Classifier",
     page_icon="🐍",
-    layout="centered",
+    layout="wide",
 )
 
 
@@ -292,13 +292,59 @@ def predict(
 
 
 def main():
-    st.title("Snake Species Classifier")
-    st.caption("Inception V3 · CPU inference")
-    st.write(
-        "Upload an image to see the model's top predicted species and available "
-        "dataset details. This is an educational classifier, not a reliable "
-        "method for deciding whether a snake is safe to approach."
-    )
+    st.markdown("""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    :root { --ink:#182318; --paper:#f3edda; --lime:#d4ff36; --pink:#ff6b8a; --orange:#ff6d35; }
+    .stApp { background:var(--paper); color:var(--ink); font-family:'Space Grotesk',sans-serif; }
+    .block-container { max-width:1400px; padding-top:2rem; padding-bottom:5rem; }
+    header[data-testid="stHeader"] { background:transparent; }
+    [data-testid="stSidebar"] { background:#182318; }
+    h1,h2,h3,p,label { font-family:'Space Grotesk',sans-serif !important; color:var(--ink); }
+    .hero { position:relative; overflow:hidden; background:var(--lime); border:3px solid var(--ink); border-radius:6px;
+      padding:clamp(2rem,6vw,5.8rem); box-shadow:10px 10px 0 var(--ink); margin:1rem 0 2.5rem; }
+    .hero:after { content:'✳'; position:absolute; right:4%; top:-40px; font-size:clamp(9rem,24vw,21rem); line-height:1; color:var(--pink); transform:rotate(12deg); }
+    .snake-art { position:absolute; z-index:0; width:min(43%,520px); right:1.5%; bottom:-5%; transform:rotate(-7deg); filter:drop-shadow(8px 9px 0 rgba(24,35,24,.18)); }
+    .snake-art path { stroke:var(--ink); stroke-width:7; stroke-linecap:round; stroke-linejoin:round; }
+    .snake-art .body { fill:var(--orange); }
+    .snake-art .belly { fill:#f3edda; stroke-width:3; }
+    .snake-art .mark { fill:var(--lime); stroke-width:3; }
+    .snake-art .detail { fill:none; stroke-width:3; }
+    .snake-art .eye { fill:var(--ink); stroke:none; }
+    @media (max-width:700px) { .snake-art { width:46%; right:-5%; bottom:-2%; opacity:.78; } .hero h1 { font-size:clamp(3rem,14vw,5rem); } }
+    .eyebrow,.mono { font-family:'DM Mono',monospace !important; text-transform:uppercase; letter-spacing:.12em; font-size:.75rem; }
+    .hero h1 { position:relative; z-index:1; max-width:850px; font-size:clamp(3.2rem,9vw,8rem); line-height:.84; letter-spacing:-.09em; margin:1rem 0; font-weight:700; }
+    .hero p { position:relative; z-index:1; max-width:540px; font-size:1.1rem; line-height:1.5; }
+    .stFileUploader { background:#fffdf3; border:2px dashed var(--ink); border-radius:5px; padding:1rem; }
+    [data-testid="stFileUploaderDropzone"] { background:#fffdf3; border:0; }
+    .stButton button { border:2px solid var(--ink); border-radius:3px; background:var(--pink); color:var(--ink); font-weight:700; text-transform:uppercase; letter-spacing:.08em; box-shadow:4px 4px 0 var(--ink); transition:transform .15s,box-shadow .15s; }
+    .stButton button:hover { background:var(--orange); color:var(--ink); transform:translate(2px,2px); box-shadow:2px 2px 0 var(--ink); }
+    [data-testid="stMetric"] { background:var(--lime); border:2px solid var(--ink); padding:1rem; box-shadow:4px 4px 0 var(--ink); }
+    [data-testid="stProgress"] > div > div { background:var(--pink); }
+    [data-testid="stExpander"] { border:2px solid var(--ink); border-radius:3px; background:#fffdf3; }
+    .section-tag { display:inline-block; background:var(--ink); color:var(--lime); padding:.35rem .7rem; font:500 .72rem 'DM Mono',monospace; text-transform:uppercase; letter-spacing:.12em; }
+    .stAlert { border:2px solid var(--ink); }
+    [data-testid="stImage"] img { border:3px solid var(--ink); box-shadow:7px 7px 0 var(--pink); }
+    .credits { margin-top:4rem; padding:1.5rem 0 0; border-top:3px solid var(--ink); display:flex; justify-content:space-between; align-items:flex-start; gap:1.5rem; flex-wrap:wrap; }
+    .credits-title { font:500 .72rem 'DM Mono',monospace; letter-spacing:.14em; text-transform:uppercase; }
+    .credits-names { font-size:1.05rem; font-weight:700; }
+    </style>
+    <div class="hero">
+      <div class="eyebrow">Field notes · computer vision · CPU powered</div>
+      <h1>WHO’S<br>THAT SNAKE?</h1>
+      <p>A visual field guide powered by an Inception V3 classifier. Drop in a photo to explore its closest species matches.</p>
+      <svg class="snake-art" viewBox="0 0 520 390" role="img" aria-label="Playful illustrated orange snake">
+        <path class="body" d="M488 54c-43-34-102-23-110 17-9 48 66 65 49 106-18 43-98 17-126 50-29 34 22 79 71 57 39-18 61-48 91-38 31 11 27 50-7 61-40 13-70-18-112 1-41 18-48 70-11 87 36 17 70-3 93-21" />
+        <path class="belly" d="M393 97c21 12 39 27 39 47 0 14-10 25-24 33-18-13-31-28-30-44 0-14 6-26 15-36z" />
+        <path class="belly" d="M314 234c17-5 37-4 54 2-7 14-21 25-38 28-13 2-25-1-33-8 2-9 8-17 17-22z" />
+        <path class="belly" d="M338 298c18-5 37 1 53 10-8 12-21 20-37 21-14 1-26-4-33-13 3-8 8-14 17-18z" />
+        <path class="mark" d="M451 44c16-12 39-11 54-1 8 6 11 14 9 22-13 9-32 10-49 3-9-5-14-14-14-24z" />
+        <path class="detail" d="M469 56c13 8 27 10 42 8" />
+        <circle class="eye" cx="475" cy="34" r="6" />
+        <path class="detail" d="M504 69c10 4 17 3 24-2m-8 2 7 9m-7-9-1 10" />
+      </svg>
+    </div>
+    """, unsafe_allow_html=True)
 
     if not DEFAULT_CHECKPOINT.exists():
         st.error(
@@ -317,7 +363,8 @@ def main():
         st.error(f"Could not load model or metadata: {exc}")
         st.stop()
 
-    with st.expander("Model details"):
+    st.markdown('<span class="section-tag">01 / Configure your scan</span>', unsafe_allow_html=True)
+    with st.expander("Model details · open field notes"):
         st.write(f"Architecture: `{checkpoint.get('architecture', 'inception_v3')}`")
         st.write(f"Classes: `{num_classes}`")
         st.write("Saved validation accuracy: `87.04%`")
@@ -327,12 +374,17 @@ def main():
             + ("`train.csv` loaded" if metadata.get("by_species") else "`train.csv` not found or empty")
         )
 
-    uploaded = st.file_uploader(
-        "Choose a snake image",
+    left, right = st.columns([1.35, .65], gap="large")
+    with left:
+        uploaded = st.file_uploader(
+        "Drop a specimen photo here · JPG / PNG / WEBP",
         type=["jpg", "jpeg", "png", "webp", "bmp"],
         accept_multiple_files=False,
     )
-    top_k = st.slider(
+    with right:
+        st.markdown("### Tune the field guide")
+        st.caption("Choose how many likely matches to compare.")
+        top_k = st.slider(
         "Number of predictions",
         min_value=1,
         max_value=min(10, num_classes),
@@ -346,7 +398,8 @@ def main():
             st.error(f"Could not read that image: {exc}")
             st.stop()
 
-        st.image(image, caption="Uploaded image", use_container_width=True)
+        st.markdown('<span class="section-tag">02 / Specimen received</span>', unsafe_allow_html=True)
+        st.image(image, caption="YOUR FIELD PHOTO", use_container_width=True)
 
         if st.button("Classify image", type="primary", use_container_width=True):
             with st.spinner("Running CPU inference..."):
@@ -358,7 +411,8 @@ def main():
                     st.error(f"Inference failed: {exc}")
                     st.stop()
 
-            st.subheader("Top predictions")
+            st.markdown('<span class="section-tag">03 / Closest matches</span>', unsafe_allow_html=True)
+            st.title("The field guide says…")
             for rank, item in enumerate(predictions, start=1):
                 # The checkpoint may map an output to a numeric dataset class_id
                 # (for example, "462"). Resolve that label to train.csv first,
@@ -385,6 +439,13 @@ def main():
                 "the identification is correct. The poisonous label reflects the "
                 "dataset only. Never approach or handle a snake based on this output."
             )
+
+    st.markdown("""
+    <footer class="credits">
+      <div class="credits-title">Built by the project team</div>
+      <div class="credits-names">Gourav Sahu &nbsp;·&nbsp; Harsh Katariya &nbsp;·&nbsp; Nishant Saini &nbsp;·&nbsp; Pari Sethi</div>
+    </footer>
+    """, unsafe_allow_html=True)
 
 
 if __name__ == "__main__":
